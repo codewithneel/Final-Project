@@ -2,6 +2,7 @@ package com.cooksys.groupfinal.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class TeamServiceImpl implements TeamService {
 
 	void checkCredentials(CredentialsDto credentialsDto) {
 		if (credentialsDto == null || credentialsDto.getUsername() == null || credentialsDto.getPassword() == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Make sure you fill out the credential fields");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Make sure you fill out all the credential fields");
 		}
 
 		List<User> allUsers = userRepository.findAll();
@@ -73,7 +74,7 @@ public class TeamServiceImpl implements TeamService {
 		checkCredentials(credentialsDto);
 
 		if (teamDto == null || teamDto.getName() == null || teamDto.getDescription() == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Make sure you fill out the Team fields");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Make sure you fill out all the Team fields");
 		}
 
 		Team newTeam = teamMapper.dtoToEntity(teamDto);
@@ -85,6 +86,17 @@ public class TeamServiceImpl implements TeamService {
 
 		return teamMapper.entityToDto(teamRepository.saveAndFlush(newTeam));
 
+	}
+
+	@Override
+	public Set<TeamDto> getTeamsInCompany(Long companyId)
+	{
+		Company foundCompany = checkCompanyExists(companyId);
+		
+		Set<Team> allTeams=foundCompany.getTeams();
+		
+		return teamMapper.entitiesToDtos(allTeams);
+	
 	}
 
 }

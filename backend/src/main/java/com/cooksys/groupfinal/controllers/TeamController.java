@@ -1,5 +1,9 @@
 package com.cooksys.groupfinal.controllers;
 
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,4 +29,11 @@ public class TeamController {
 	{
 		return teamService.createTeamInCompany(companyId,credentialsDto, teamDto);
 	}
+	
+	@GetMapping("/{companyId}/teammates")
+	public Set<TeamDto> getTeamsInCompany(@PathVariable Long companyId)
+	{
+		return teamService.getTeamsInCompany(companyId);
+	}
+	
 }
