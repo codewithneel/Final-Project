@@ -1,10 +1,8 @@
 package com.cooksys.groupfinal.controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.cooksys.groupfinal.dtos.ProfileDto;
+import com.cooksys.groupfinal.dtos.UserRequestDto;
+import org.springframework.web.bind.annotation.*;
 
 import com.cooksys.groupfinal.dtos.CredentialsDto;
 import com.cooksys.groupfinal.dtos.FullUserDto;
@@ -16,13 +14,45 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-	
-	private final UserService userService;
-	
-	@PostMapping("/login")
-	@CrossOrigin(origins="*")
+
+    private final UserService userService;
+
+    @PostMapping("/login")
+    @CrossOrigin(origins = "*")
     public FullUserDto login(@RequestBody CredentialsDto credentialsDto) {
         return userService.login(credentialsDto);
     }
+
+    @PostMapping()
+    public FullUserDto createUser(@RequestBody UserRequestDto userRequestDto) {
+        return userService.createUser(userRequestDto);
+    }
+
+    @PatchMapping("/{username}/profile")
+    public FullUserDto editUserProfile(@PathVariable String username, @RequestBody ProfileDto profileDto) {
+        return userService.patchUserProfile(username, profileDto);
+    }
+
+    @PatchMapping("/{username}/credentials")
+    public FullUserDto editUserCredentials(@PathVariable String username, @RequestBody CredentialsDto credentialsDto) {
+        return userService.patchUserCredentials(username, credentialsDto);
+    }
+
+    @PatchMapping("/{username}/admin/{adminStatus}")
+    public FullUserDto editUserAdmin(@PathVariable String username, @PathVariable boolean adminStatus) {
+        return userService.patchUserAdmin(username, adminStatus);
+    }
+
+    @PatchMapping("/{username}/active/{activeStatus}")
+    public FullUserDto editUserActive(@PathVariable String username, @PathVariable boolean activeStatus) {
+        return userService.patchUserActive(username, activeStatus);
+    }
+
+    @GetMapping("/{username}")
+    public FullUserDto getUser(@PathVariable String username) {
+        return userService.getUser(username);
+    }
+
+
 
 }
