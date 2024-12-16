@@ -19,30 +19,26 @@ import com.cooksys.groupfinal.services.AnnouncementService;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class AnnouncementServiceImpl implements AnnouncementService {
 	private final AnnouncementRepository announcementRepository;
 	private final AnnouncementMapper announcementMapper;
-	
+
 	private final CompanyRepository companyRepository;
-	
+
 	@Override
-	public Set<AnnouncementDto> getAnnouncementsForCompany(Long companyId)
-	{
+	public Set<AnnouncementDto> getAnnouncementsForCompany(Long companyId) {
 		Optional<Company> optionalCompany = companyRepository.findById(companyId);
-		
-		if (optionalCompany.isEmpty())
-		{
+
+		if (optionalCompany.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Company found with id: " + companyId);
 		}
-		
-		Company foundCompany=optionalCompany.get();
-		
+
+		Company foundCompany = optionalCompany.get();
+
 		Set<Announcement> allAnnouncements = foundCompany.getAnnouncements();
-		
-		
+
 		return announcementMapper.entitiesToDtos(allAnnouncements);
 	}
 
