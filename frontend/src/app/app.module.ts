@@ -10,7 +10,7 @@ import { CompanyComponent } from './company/company.component';
 import { TeamsComponent } from './teams/teams.component';
 import { UsersComponent } from './users/users.component';
 import { ProjectsComponent } from './projects/projects.component';
-
+import { CurrentUserService } from './current-user.service';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
