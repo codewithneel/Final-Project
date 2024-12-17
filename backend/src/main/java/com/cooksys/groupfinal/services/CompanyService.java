@@ -20,7 +20,7 @@ public interface CompanyService {
 
 	Set<CompanyDto> getUserCompanies(Long userId);
 
-	void addCompanyToUserList(Long companyId, Long userId);
+	void addUserToCompany(Long companyId, Long userId);
 
 
 
