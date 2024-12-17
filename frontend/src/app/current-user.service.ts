@@ -14,8 +14,12 @@ export class CurrentUserService {
     this.sharedloggedIN.next(value);
   }
 
-  private userData = new BehaviorSubject<any>(null); 
+  userData = new BehaviorSubject<any>(null); 
   userData$ = this.userData.asObservable();
+
+  
+  currentCompany= new BehaviorSubject<any>(null); 
+  currentCompany$= this.currentCompany.asObservable();
 
   constructor() { }
 
@@ -23,8 +27,18 @@ export class CurrentUserService {
     this.userData.next(data);
   }
 
+  setCurrentCompany(data: any)
+  {
+    this.currentCompany.next(data);
+  }
+
   getUserData() {
     return this.userData.value;
+  }
+
+  getCurrentCompany()
+  {
+    return this.currentCompany.value;
   }
 
   
