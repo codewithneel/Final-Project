@@ -115,7 +115,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public void addCompanyToUserList(Long companyId, Long userId) {
+	public void addUserToCompany(Long companyId, Long userId) {
 		Company company = findCompany(companyId);
 		User user = findUser(userId, "A user with the provided id does not exist");
 		if(!company.getEmployees().contains(user)) {

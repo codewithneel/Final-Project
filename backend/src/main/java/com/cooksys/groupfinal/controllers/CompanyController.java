@@ -54,7 +54,7 @@ public class CompanyController {
 	}
 	
 	@PatchMapping("/{companyId}/user/{userId}")
-	public void addCompanyToUserList(@PathVariable Long companyId, @PathVariable Long userId) {
-		companyService.addCompanyToUserList(companyId, userId);
+	public void addUserToCompany(@PathVariable Long companyId, @PathVariable Long userId) {
+		companyService.addUserToCompany(companyId, userId);
 	}
 }
