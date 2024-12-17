@@ -3,11 +3,13 @@ package com.cooksys.groupfinal.controllers;
 import java.util.Set;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.groupfinal.dtos.AnnouncementDto;
+import com.cooksys.groupfinal.dtos.CompanyDto;
 import com.cooksys.groupfinal.dtos.FullUserDto;
 import com.cooksys.groupfinal.dtos.ProjectDto;
 import com.cooksys.groupfinal.dtos.TeamDto;
@@ -41,5 +43,18 @@ public class CompanyController {
 	public Set<ProjectDto> getAllProjects(@PathVariable Long companyId, @PathVariable Long teamId) {
 		return companyService.getAllProjects(companyId, teamId);
 	}
-
+	
+	/*
+	 * Primary purpose: get list of companies managed by an admin
+	 * Secondary use: retrieve list of companies that a user works for 
+	 */
+	@GetMapping("/user/{userId}")
+	public Set<CompanyDto> getUserCompanies(@PathVariable Long userId){
+		return companyService.getUserCompanies(userId);
+	}
+	
+	@PatchMapping("/{companyId}/user/{userId}")
+	public void addCompanyToUserList(@PathVariable Long companyId, @PathVariable Long userId) {
+		companyService.addCompanyToUserList(companyId, userId);
+	}
 }
