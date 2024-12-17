@@ -1,0 +1,5 @@
+:host {
+    display: block;
+    height: 100%; /* Stretch the component to full height */
+    background: inherit; /* Inherit background color */
+}
