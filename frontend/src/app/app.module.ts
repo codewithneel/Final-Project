@@ -10,6 +10,7 @@ import { CompanyComponent } from './company/company.component';
 import { TeamsComponent } from './teams/teams.component';
 import { UsersComponent } from './users/users.component';
 import { ProjectsComponent } from './projects/projects.component';
+
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -28,7 +29,7 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [CurrentUserService],
   bootstrap: [AppComponent]
 })
 export class AppModule 
