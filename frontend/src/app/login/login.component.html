@@ -1,0 +1,20 @@
+
+<div class="loginPage" *ngIf="loggedIN==false">
+    <div class="title">
+        <h1>COOK SYSTEMS Final App</h1>
+    </div>
+    <div class="login-card">
+        <div class="login-form">
+            <input
+                type="text" placeholder="Username"
+                />
+            <input
+                type="password" placeholder="Password"
+                />
+                
+                <button (click)="loginLogic()" routerLink="/company">LOGIN</button>
+        </div>
+    </div>
+
+</div>
+

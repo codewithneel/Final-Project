@@ -1,0 +1,21 @@
+.title 
+{
+    color:#1BA098;
+    display: grid;
+    place-items: center;
+}
+
+.login-card, .selectCompany
+{
+    color:#1BA098;
+    display: grid;
+    place-items: center;
+}
+
+.login-form
+{
+    display:flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 25px;
+}
