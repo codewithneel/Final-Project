@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AnnouncementServiceImpl implements AnnouncementService {
-	
 	private final CompanyRepository companyRepository;
 	private final UserRepository userRepository;
 	private final AnnouncementMapper announcementMapper;
@@ -51,5 +50,5 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 		announcement.setCompany(company.get());
 		return announcementMapper.entityToDto(announcementRepository.saveAndFlush(announcement));
 	}
-	
+
 }
