@@ -5,12 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { LoginComponent } from './login/login.component';
+import { CompanyComponent } from './company/company.component';
+import { TeamsComponent } from './teams/teams.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    LoginComponent,
+    CompanyComponent,
+    TeamsComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
@@ -19,4 +27,8 @@ import { NavbarComponent } from './navbar/navbar.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule 
+{
+  loggedIN:boolean=false;
+
+}
