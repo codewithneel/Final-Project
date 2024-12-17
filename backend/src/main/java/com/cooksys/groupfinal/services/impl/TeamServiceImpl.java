@@ -18,7 +18,6 @@ import com.cooksys.groupfinal.repositories.CompanyRepository;
 import com.cooksys.groupfinal.repositories.TeamRepository;
 import com.cooksys.groupfinal.repositories.UserRepository;
 import com.cooksys.groupfinal.services.TeamService;
-import com.cooksys.groupfinal.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +30,9 @@ public class TeamServiceImpl implements TeamService {
 	private final TeamMapper teamMapper;
 
 	private final UserRepository userRepository;
+	
+	
+
 
 	Company checkCompanyExists(Long companyId) {
 		Optional<Company> optionalCompany = companyRepository.findById(companyId);
@@ -40,6 +42,18 @@ public class TeamServiceImpl implements TeamService {
 		}
 
 		return optionalCompany.get();
+	}
+	
+	Team checkTeamExists(Long teamId)
+	{
+		Optional<Team> optionalTeam = teamRepository.findById(teamId); 
+		
+		if (optionalTeam.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Team found with id: " + teamId);
+		}
+		
+		return optionalTeam.get();
+		
 	}
 
 	void checkCredentials(CredentialsDto credentialsDto) {
@@ -67,11 +81,8 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	@Override
-	public TeamDto createTeamInCompany(Long companyId, CredentialsDto credentialsDto, TeamDto teamDto) {
+	public TeamDto createTeamInCompany(Long companyId, TeamDto teamDto) {
 		Company foundCompany = checkCompanyExists(companyId);
-
-		// check credentials
-		checkCredentials(credentialsDto);
 
 		if (teamDto == null || teamDto.getName() == null || teamDto.getDescription() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Make sure you fill out all the Team fields");
@@ -98,5 +109,7 @@ public class TeamServiceImpl implements TeamService {
 		return teamMapper.entitiesToDtos(allTeams);
 	
 	}
+
+	
 
 }
