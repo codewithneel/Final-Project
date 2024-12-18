@@ -1,6 +1,6 @@
 import { Component,Input, Output,EventEmitter, OnInit} from '@angular/core';
 import { CurrentUserService } from '../current-user.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,12 +13,11 @@ export class LoginComponent implements OnInit {
   username: string='';
   password: string='';
   
-  constructor(private _currentUserService: CurrentUserService){}
+  constructor(private _currentUserService: CurrentUserService, private router: Router){}
 
   loginLogic()
   {
  
-    this._currentUserService.setSharedVariableloggedIN(true)
     fetch("http://localhost:8080/users/login", {
       method: "POST",
       body: JSON.stringify({
@@ -35,10 +34,22 @@ export class LoginComponent implements OnInit {
       console.log("Response:", data);
       
       this._currentUserService.setUserData(data);
-      this._currentUserService.setSharedVariableloggedIN(true);
+      if(data.message=="The username provided does not belong to an active user.")
+      {
+        this._currentUserService.setSharedVariableloggedIN(false);
+      }
+      else
+      {
+        this._currentUserService.setSharedVariableloggedIN(true);
+        this.loggedIN = true; 
+        this.router.navigate(['/company']); 
+      }
+     
+      
     })
     .catch((error) => {
       console.error("Error:", error);
+      
     });
   }
   ngOnInit()
