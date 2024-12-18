@@ -9,7 +9,7 @@ import { CurrentUserService } from '../current-user.service';
 export class TeamsComponent implements OnInit {
 
 
-  constructor(private _currentUserService: CurrentUserService){}
+  constructor(public _currentUserService: CurrentUserService){}
 
   teams: any[] = [];
   teamProjectLengthDict: {[key:number]: number}  = {};
@@ -74,7 +74,7 @@ export class TeamsComponent implements OnInit {
    
   }
 
-  async postTeam()
+  async postTeam(companyId:number)
   {
     console.log("team name is "+this.teamName)
     console.log("Description is "+this.description);
@@ -83,10 +83,45 @@ export class TeamsComponent implements OnInit {
     {
       console.log("member "+(i+1)+": "+this.selectedMembers[i]);
     }
+    fetch(`http://localhost:8080/team/${companyId}`, {
+      method: "POST",
+      body: JSON.stringify({
+        username: "",
+        password: "this.password"
+      })
+      ,
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Response:", data);
+      
+      this._currentUserService.setUserData(data);
+      if(data.message=="The username provided does not belong to an active user.")
+      {
+        this._currentUserService.setSharedVariableloggedIN(false);
+      }
+      else
+      {
+        this._currentUserService.setSharedVariableloggedIN(true);
+    
+      }
+     
+      
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      
+    });
+
   }
+  
 
   async getNumOfProjects(teamId:number) 
   {
+    
     /*localhost:8080/company/6/teams/11/projects `http://localhost:8080/6/teams/${teamId}/projects` */
     fetch(`http://localhost:8080/company/6/teams/${teamId}/projects`, {
       method: "GET",
