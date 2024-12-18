@@ -2,6 +2,7 @@ package com.cooksys.groupfinal.controllers;
 
 import java.util.Set;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class CompanyController {
 	private final CompanyService companyService;
 	
 	@GetMapping("/{id}/users")
+	@CrossOrigin(origins = "*")
     public Set<FullUserDto> getAllUsers(@PathVariable Long id) {
         return companyService.getAllUsers(id);
     }

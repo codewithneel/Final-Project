@@ -6,7 +6,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CurrentUserService {
 
-
   private sharedloggedIN = new BehaviorSubject<boolean>(false);
   sharedloggedIN$ = this.sharedloggedIN.asObservable();
 
