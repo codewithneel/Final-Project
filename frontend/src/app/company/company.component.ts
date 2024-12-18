@@ -22,6 +22,9 @@ export class CompanyComponent implements OnInit {
   constructor(private currentUserService: CurrentUserService, private router: Router){}
 
   ngOnInit(): void {
+    if(!this.currentUserService.hasSession()) {
+      this.router.navigateByUrl("/");
+    }
     this.userData = this.currentUserService.getUserData();
     this.companies = this.userData.companies;
   }
