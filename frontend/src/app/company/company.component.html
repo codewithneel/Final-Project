@@ -1,1 +1,6 @@
-<p>company works!</p>
+<app-navbar></app-navbar>
+<label for="selectCompany">Select Company</label>
+<select id="selectCompany" [(ngModel)]="selectedCompany" (ngModelChange)="onCompanyChange()">
+    <option disabled selected>Pick an option</option>
+    <option *ngFor="let company of companies" [value]="company.id">{{company.name}}</option>
+</select>

@@ -1,1 +1,27 @@
-<p>Home works</p>
+
+
+<app-navbar></app-navbar>
+
+<div class="home-container">
+  <div class="title-section">
+    <h1>Announcements</h1>
+  </div>
+  <div *ngIf="announcements.length > 0; else noAnnouncements" class="announcements-container">
+    <div *ngFor="let announcement of announcements" class="announcement-card">
+      <div class="announcement-header">
+        <h2>{{ announcement.title }}</h2>
+        <span class="announcement-date">{{ announcement.date }}</span>
+      </div>
+      <div class="announcement-body">
+        <p>{{ announcement.message }}</p>
+      </div>
+      <div class="announcement-footer">
+        <small>By {{ announcement.author }}</small>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noAnnouncements>
+    <p class="no-announcements">No announcements to display</p>
+  </ng-template>
+</div>

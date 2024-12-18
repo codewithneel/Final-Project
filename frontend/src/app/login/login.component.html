@@ -7,9 +7,11 @@
         <div class="login-form">
             <input
                 type="text" placeholder="Username"
+                [(ngModel)]="username" 
                 />
             <input
                 type="password" placeholder="Password"
+                [(ngModel)]="password"
                 />
                 
                 <button (click)="loginLogic()" routerLink="/company">LOGIN</button>
