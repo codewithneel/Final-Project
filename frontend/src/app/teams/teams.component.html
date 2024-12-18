@@ -1,2 +1,56 @@
 <app-navbar></app-navbar>
-<p>teams works!</p>
+<div *ngIf="addTeamMember==false">
+
+    <h1>Teams</h1>
+    <p>PS also remember to update the code for how the members are selected according to the Company</p>
+    <div    *ngFor="let team of teams">
+        <p>{{team.name}}</p>
+        
+        
+        <div *ngIf="teamProjectLengthDict.hasOwnProperty(team.id)==false">
+            {{getNumOfProjects(team.id)}}
+            
+        </div>
+        <p># of Projects: {{ teamProjectLengthDict[team.id] }}</p>
+        <p>Teamates:</p>
+        <div *ngFor="let tm of team.teammates">
+            <p>{{tm.profile.firstName}} {{tm.profile.lastName[0]}}.</p>
+        </div>
+        <button>Go To Projects</button>
+        <br>
+    </div>
+    <br>
+    <button (click)="addTeamMember=true">Add Team Member</button>
+    <br>
+</div>
+
+<div *ngIf="addTeamMember">
+
+    <div class="add-team-form">
+        <input
+            type="text" placeholder="Team Name"
+            [(ngModel)]="teamName" 
+            />
+        <input
+            type="text" placeholder="Description"
+            [(ngModel)]="description"
+            />
+        <h1>Select Members</h1>
+        <select [(ngModel)]="selectedItem">
+            <option *ngFor="let member of teamMembers" [ngValue]="member">{{ member.profile.firstName }} {{ member.profile.lastName[0] }}.</option>
+        </select>
+        <button (click)="addToSelectedMembers()">Add Member</button>
+        <br>
+        <h1 *ngIf="selectedMembers.length > 0">Selected Members</h1>
+        <div *ngFor="let member of selectedMembers">
+            <div class="potentialTeamMember">
+                <p>{{ member.profile.firstName }} {{ member.profile.lastName }}</p> 
+                <button (click)="removeMember(member.id)">Remove person</button>
+            </div>
+            
+            
+        </div>  
+        <button (click)="postTeam()">Submit</button>
+            
+    </div>
+</div>
