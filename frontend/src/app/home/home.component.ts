@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-interface Announcement {
-  id: number;
-  title: string;
-  message: string;
-  date: string;
-  author: string;
-}
+import { HttpClient } from '@angular/common/http';
+import { CurrentUserService } from '../current-user.service';
 
 @Component({
   selector: 'app-home',
@@ -14,32 +8,59 @@ interface Announcement {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  announcements: Announcement[] = [];
+  userData: any = null;       // Store user data
+  announcements: any[] = [];  // Store all fetched announcements
+  isAdmin: boolean = false;   // Check if user is an admin
+  showCreateForm: boolean = false; // Toggle pop-up visibility
+  newAnnouncement = { title: '', message: '' }; // Form inputs
+
+  baseUrl = 'http://localhost:8080';
+
+  constructor(
+    private currentUserService: CurrentUserService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    // Dummy announcements for display
-    this.announcements = [
-      {
-        id: 1,
-        title: 'Welcome to the Company!',
-        message: 'We are excited to have you on board. Let’s make great things happen.',
-        date: '2024-12-17',
-        author: 'Admin'
-      },
-      {
-        id: 2,
-        title: 'Holiday Schedule',
-        message: 'Our offices will be closed from Dec 24th to Jan 2nd for the holidays.',
-        date: '2024-12-15',
-        author: 'HR Department'
-      },
-      {
-        id: 3,
-        title: 'System Maintenance',
-        message: 'There will be scheduled maintenance on Dec 20th from 12:00 AM to 4:00 AM.',
-        date: '2024-12-14',
-        author: 'IT Support'
-      }
-    ];
+    // Fetch user data and check admin status
+    this.userData = this.currentUserService.getUserData();
+    this.isAdmin = this.userData?.admin || false;
+
+    // Fetch announcements if companies exist
+    if (this.userData && this.userData.companies) {
+      this.fetchAnnouncementsForCompanies(this.userData.companies);
+    }
+  }
+
+  fetchAnnouncementsForCompanies(companies: any[]): void {
+    companies.forEach(company => {
+      this.http.get<any[]>(`${this.baseUrl}/company/${company.id}/announcements`).subscribe({
+        next: (response) => {
+          this.announcements.push(...response);
+        },
+        error: (error) => {
+          console.error(`Error fetching announcements for company ${company.id}:`, error);
+        }
+      });
+    });
+  }
+
+  // Submit new announcement
+  createAnnouncement(): void {
+    const companyId = this.userData?.companies[0]?.id; // Default to first company
+    const payload = { title: this.newAnnouncement.title, message: this.newAnnouncement.message };
+
+    this.http.post(`${this.baseUrl}/announcements/company/${companyId}/user/${this.userData.id}`, payload)
+      .subscribe({
+        next: (response) => {
+          console.log('Announcement Created:', response);
+          this.announcements.push(response); // Add to list
+          this.showCreateForm = false; // Close the form
+          this.newAnnouncement = { title: '', message: '' }; // Reset form
+        },
+        error: (error) => {
+          console.error('Error creating announcement:', error);
+        }
+      });
   }
 }

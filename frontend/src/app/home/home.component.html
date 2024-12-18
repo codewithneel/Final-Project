@@ -1,27 +1,42 @@
-
-
 <app-navbar></app-navbar>
-
 <div class="home-container">
-  <div class="title-section">
-    <h1>Announcements</h1>
+  <h1>Company Announcements</h1>
+
+  <!-- Admin-only Create Announcement Button -->
+  <div *ngIf="isAdmin" class="admin-actions">
+    <button (click)="showCreateForm = true">Create Announcement</button>
   </div>
-  <div *ngIf="announcements.length > 0; else noAnnouncements" class="announcements-container">
-    <div *ngFor="let announcement of announcements" class="announcement-card">
-      <div class="announcement-header">
-        <h2>{{ announcement.title }}</h2>
-        <span class="announcement-date">{{ announcement.date }}</span>
-      </div>
-      <div class="announcement-body">
-        <p>{{ announcement.message }}</p>
-      </div>
-      <div class="announcement-footer">
-        <small>By {{ announcement.author }}</small>
+
+  <!-- Pop-up Modal for Creating Announcements -->
+  <div *ngIf="showCreateForm" class="modal">
+    <div class="modal-content">
+      <h2>Create New Announcement</h2>
+      <label for="title">Title:</label>
+      <input id="title" [(ngModel)]="newAnnouncement.title" placeholder="Enter title" />
+
+      <label for="message">Message:</label>
+      <textarea id="message" [(ngModel)]="newAnnouncement.message" placeholder="Enter message"></textarea>
+
+      <div class="modal-actions">
+        <button (click)="createAnnouncement()">Submit</button>
+        <button (click)="showCreateForm = false">Cancel</button>
       </div>
     </div>
   </div>
 
+  <!-- Display Announcements -->
+  <div *ngIf="announcements.length > 0; else noAnnouncements">
+    <div *ngFor="let announcement of announcements" class="announcement-card">
+      <h2>{{ announcement.title }}</h2>
+      <p>{{ announcement.message }}</p>
+      <small>
+        Date: {{ announcement.date | date: 'medium' }} |
+        Author: {{ announcement.author?.profile?.firstName }} {{ announcement.author?.profile?.lastName }}
+      </small>
+    </div>
+  </div>
+
   <ng-template #noAnnouncements>
-    <p class="no-announcements">No announcements to display</p>
+    <p>No announcements available.</p>
   </ng-template>
 </div>
