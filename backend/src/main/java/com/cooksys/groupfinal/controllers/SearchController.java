@@ -1,5 +1,6 @@
 package com.cooksys.groupfinal.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class SearchController {
 	private final SearchService searchService;
 	
 	@GetMapping("/user/{email}")
+	@CrossOrigin(origins = "*")
 	public BasicUserDto searchUser(@PathVariable String email) {
 		return searchService.searchUser(email);
 	}

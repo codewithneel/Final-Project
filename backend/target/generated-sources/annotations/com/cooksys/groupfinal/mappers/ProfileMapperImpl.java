@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-16T23:19:55-0600",
-    comments = "version: 1.4.1.Final, compiler: javac, environment: Java 21.0.4 (Eclipse Adoptium)"
+    date = "2024-12-18T02:33:06-0500",
+    comments = "version: 1.4.1.Final, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
 )
 @Component
 public class ProfileMapperImpl implements ProfileMapper {
