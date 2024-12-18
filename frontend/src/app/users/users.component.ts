@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CurrentUserService } from '../current-user.service';
+import { Router } from '@angular/router';
 
 interface employee {
   name: string,
@@ -22,7 +24,12 @@ export class UsersComponent implements OnInit {
   email: string = ""
   displayedColumns: string[] = ["name", "email", "active", "admin", "status"]
 
+  constructor(private currentUserService: CurrentUserService, private router: Router){}
+
   ngOnInit(): void {
+    if(!this.currentUserService.hasSession()) {
+      this.router.navigateByUrl("/");
+    }
     fetch(`http://localhost:8080/company/${this.id}/users`, {
       // method: "GET",
       // mode: "no-cors"

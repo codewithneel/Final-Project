@@ -40,5 +40,8 @@ export class CurrentUserService {
     return this.currentCompany.value;
   }
 
+  hasSession(){
+    return this.sharedloggedIN.value;
+  }
   
 }
