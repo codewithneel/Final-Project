@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentUserService } from '../current-user.service';
+import { Router } from '@angular/router';
 
 interface company{
   id: number,
   name: string,
-  // description: string
+  description: string
 }
 
 @Component({
@@ -15,25 +16,19 @@ interface company{
 
 export class CompanyComponent implements OnInit {
   selectedCompany : number = -1;
-  companies : company[] = [
-    {
-      id: 1,
-      name: "CookSys",
-    },
-    {
-      id: 2,
-      name: "Fedex"
-    }
-  ];
-  // companies : company[] = []
+  companies : company[] = [];
+  userData: any = null; 
 
-  constructor(private currentUserService: CurrentUserService){}
+  constructor(private currentUserService: CurrentUserService, private router: Router){}
 
   ngOnInit(): void {
-    // this.companies = this.currentUserService.getUserData().companies;
+    this.userData = this.currentUserService.getUserData();
+    this.companies = this.userData.companies;
   }
 
   onCompanyChange(): void{
-    console.log(this.selectedCompany);
+    this.currentUserService.setCurrentCompany(this.selectedCompany);
+    console.log(this.currentUserService.getCurrentCompany());
+    this.router.navigateByUrl("/home");
   }
 }
