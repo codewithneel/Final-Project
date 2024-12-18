@@ -4,6 +4,7 @@ export interface AnnouncementDto {
   title: string;
   message: string;
   author: BasicUserDto;
+  companyName?: string;
 }
 
 export interface BasicUserDto {
