@@ -1,13 +1,45 @@
-.admin-actions {
+/* General styling for the page */
+body {
+  font-family: 'Quicksand', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #0a1a33; /* Dark blue background */
+  color: #ffffff;
+}
+
+/* Container for the homepage */
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Title styling */
+.home-container h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 36px;
+  color: #33c4ff; /* Light blue title */
+  text-align: center;
   margin-bottom: 20px;
 }
 
-button {
-  padding: 10px 15px;
-  margin: 5px;
+/* Admin actions button styling */
+.admin-actions button {
+  background-color: #33c4ff; /* Light blue button */
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.admin-actions button:hover {
+  background-color: #1a97d4; /* Darker blue for hover */
+}
+
+/* Modal styling */
 .modal {
   position: fixed;
   top: 0;
@@ -21,28 +53,100 @@ button {
 }
 
 .modal-content {
-  background: #fff;
+  background: #ffffff;
+  color: #333333;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 400px;
   display: flex;
   flex-direction: column;
 }
 
 .modal-content h2 {
-  margin-top: 0;
+  margin: 0 0 20px 0;
+  color: #0a1a33; /* Dark blue */
 }
 
 .modal-content input,
 .modal-content textarea {
   margin-bottom: 15px;
-  padding: 8px;
+  padding: 10px;
   width: 100%;
-  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
+.modal-content button {
+  background-color: #33c4ff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #1a97d4; /* Darker blue */
+}
+
+/* Announcements section */
+.announcement-card {
+  background-color: #102347; /* Slightly lighter dark blue */
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.announcement-card h2 {
+  font-size: 24px;
+  font-family: 'Montserrat', sans-serif;
+  color: #33c4ff;
+  margin-bottom: 10px;
+}
+
+.announcement-card p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.announcement-card small {
+  font-size: 14px;
+  color: #cccccc;
+  display: block;
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* Placeholder styling when no announcements are available */
+.home-container p {
+  text-align: center;
+  font-size: 18px;
+  color: #cccccc;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 10px;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+
+  .announcement-card {
+    padding: 15px;
+  }
+
+  .announcement-card h2 {
+    font-size: 20px;
+  }
 }
 
