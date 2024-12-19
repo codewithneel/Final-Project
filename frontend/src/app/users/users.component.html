@@ -1,40 +1,72 @@
 <app-navbar></app-navbar>
 <h1>User Registry</h1>
 <p>A general view of all your members in your organization</p>
+<div *ngIf="employeeTableFlag">
+    <mat-table [dataSource]="employees">
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+        </ng-container>
 
-<mat-table *ngIf="employeeTableFlag" [dataSource]="employees">
-    <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.active}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="active">
-        <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.active}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="admin">
+            <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.admin}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="admin">
-        <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.admin}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
-<button (click)="addUser()">Add User</button>
-<div *ngIf="addUserFlag">
-    <input placeholder="Email" [(ngModel)]="email" />
-    <button (click)="validateEmail()">Add email</button>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
 </div>
+
+<!-- Button trigger modal -->
+<button (click)="addUser()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add User
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
+          <button (click)="resetForm()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="addEmailFlag" [formGroup]="form">
+                <input type="text" formControlName="email" placeholder="email">
+                <button (click)="validateEmail()">Add email</button>
+            </div>
+            <div *ngIf="formFlag" [formGroup]="form">
+                <input type="text" formControlName="username" placeholder="username">
+                <input type="text" formControlName="firstName" placeholder="first name">
+                <input type="text" formControlName="lastName" placeholder="last name">
+                <input type="tel" formControlName="phone" placeholder="phone number">
+                <input type="password" formControlName="password" placeholder="password">
+                <label for="adminCheckbox">Make user an admin?</label>
+                <input id="adminCheckbox" type="checkbox" formControlName="admin">
+                <button (click)="createUser()" [disabled]="!form.valid">Submit</button>
+            </div>
+            <div *ngIf="isUserCreated">User Successfully Created!</div>
+            <div *ngIf="isEmp">Employee already works for this company! Shame on you!</div>
+            <div *ngIf="isExistingUserInserted">User inserted into our lineup!</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 

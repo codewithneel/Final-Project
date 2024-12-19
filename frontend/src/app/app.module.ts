@@ -12,7 +12,7 @@ import { TeamsComponent } from './teams/teams.component';
 import { UsersComponent } from './users/users.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { CurrentUserService } from './current-user.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
@@ -31,7 +31,8 @@ import { MatTableModule } from '@angular/material/table';
     AppRoutingModule,
     FormsModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [CurrentUserService],
   bootstrap: [AppComponent]

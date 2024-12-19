@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.groupfinal.dtos.AnnouncementDto;
+import com.cooksys.groupfinal.dtos.BasicUserDto;
 import com.cooksys.groupfinal.dtos.CompanyDto;
 import com.cooksys.groupfinal.dtos.FullUserDto;
 import com.cooksys.groupfinal.dtos.ProjectDto;
@@ -56,7 +57,7 @@ public class CompanyController {
 	}
 	
 	@PatchMapping("/{companyId}/user/{userId}")
-	public void addUserToCompany(@PathVariable Long companyId, @PathVariable Long userId) {
-		companyService.addUserToCompany(companyId, userId);
+	public BasicUserDto addUserToCompany(@PathVariable Long companyId, @PathVariable Long userId) {
+		return companyService.addUserToCompany(companyId, userId);
 	}
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentUserService } from '../current-user.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface employee {
   name: string,
@@ -16,64 +17,117 @@ interface employee {
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-
-  id: number = 6;
+  companyId: number = -1;
   employees: employee[] = [];
-  employeeTableFlag: boolean = false;
-  addUserFlag: boolean = false;
-  email: string = ""
   displayedColumns: string[] = ["name", "email", "active", "admin", "status"]
+  form: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    admin: [false],
+    username: ['', [Validators.required]]
+  })
+  formFlag: boolean = false;
+  employeeTableFlag: boolean = false;
+  addEmailFlag: boolean = false;
+  isUserCreated: boolean = false; 
+  isEmp: boolean = false; 
+  isExistingUserInserted: boolean = false;
 
-  constructor(private currentUserService: CurrentUserService, private router: Router){}
+  constructor(private fb: FormBuilder, private currentUserService: CurrentUserService, private router: Router){}
 
   ngOnInit(): void {
     if(!this.currentUserService.hasSession()) {
       this.router.navigateByUrl("/");
     }
-    fetch(`http://localhost:8080/company/${this.id}/users`, {
-      // method: "GET",
-      // mode: "no-cors"
-    })
+    this.companyId = this.currentUserService.getCurrentCompany()
+    fetch(`http://localhost:8080/company/${this.companyId}/users`)
     .then((response) => response.json())
     .then((data) => {
       for(const emp of data){
-        let isAdmin = emp.admin ? "Yes" : "No";
-        let isActive = emp.active ? "Yes" : "No";
-        this.employees.push({
-          name: emp.profile.firstName + " " + emp.profile.lastName,
-          email: emp.profile.email,
-          active: isActive,
-          admin: isAdmin,
-          status: emp.status,
-        })
+        this.addEmployeeToTable(emp);
       }
-      console.log(this.employees)
       this.employeeTableFlag = true;
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    .catch((error) => {console.error("Error:", error);});
   }
 
-  addUser(){
-    this.addUserFlag = true;
-  }
-
-  validateEmail(){
-    fetch(`http://localhost:8080/search/user/${this.email}`)
+  validateEmail(): void{
+    this.addEmailFlag = false;
+    fetch(`http://localhost:8080/search/user/${this.form.value.email}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
       if(data.message === "User does not exist in db"){
-        console.log("New user")
+        this.formFlag = true
+      }else if(!((this.employees.find(emp => data.profile.email === emp.email)) === undefined)) {
+        this.isEmp = true;
+      }else{
+        fetch(`http://localhost:8080/company/${this.companyId}/user/${data.id}`, {method: "PATCH"})
+        .then(response => response.json())
+        .then((data) => {
+          this.addEmployeeToTable(data);
+          this.employees = [... this.employees];
+          this.isExistingUserInserted = true;
+        })
+        .catch(error => console.log(error));
       }
     })
-    .catch((error) => {
-      console.error("Error:", error);
+    .catch((error) => {console.error("Error:", error);});
+  }
+
+  createUser(): void{
+    fetch(`http://localhost:8080/users/${this.companyId}`, {
+      method: "POST",
+      body: JSON.stringify({
+        credentials: {
+          username: this.form.value.username,
+          password: this.form.value.password
+        },
+        profile: {
+          firstName: this.form.value.firstName,
+          lastName: this.form.value.lastName,
+          email: this.form.value.email,
+          phone: this.form.value.phone
+        },
+        admin: this.form.value.admin
+      })
+      ,
+      headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      this.addEmployeeToTable(data);
+      this.employees = [... this.employees];
+      this.formFlag = false;
+      this.form.reset();
+      this.isUserCreated = true; 
     });
   }
 
+  addUser(): void {
+    this.resetForm();
+    this.addEmailFlag = true;
+  }
 
+  resetForm(): void {
+    this.form.reset();
+    this.isEmp = false;
+    this.formFlag = false;
+    this.isUserCreated = false;
+    this.isExistingUserInserted = false;
+  }
 
-
+  private addEmployeeToTable(emp: any): void{
+    let isAdmin = emp.admin ? "Yes" : "No";
+    let isActive = emp.active ? "Yes" : "No";
+    this.employees.push({
+      name: emp.profile.firstName + " " + emp.profile.lastName,
+      email: emp.profile.email,
+      active: isActive,
+      admin: isAdmin,
+      status: emp.status,
+    })
+  }
 }

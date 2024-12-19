@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cooksys.groupfinal.dtos.CredentialsDto;
 import com.cooksys.groupfinal.dtos.FullUserDto;
+import com.cooksys.groupfinal.entities.Company;
 import com.cooksys.groupfinal.entities.Credentials;
 import com.cooksys.groupfinal.entities.User;
 import com.cooksys.groupfinal.exceptions.BadRequestException;
@@ -18,6 +19,7 @@ import com.cooksys.groupfinal.exceptions.NotAuthorizedException;
 import com.cooksys.groupfinal.exceptions.NotFoundException;
 import com.cooksys.groupfinal.mappers.CredentialsMapper;
 import com.cooksys.groupfinal.mappers.FullUserMapper;
+import com.cooksys.groupfinal.repositories.CompanyRepository;
 import com.cooksys.groupfinal.repositories.UserRepository;
 import com.cooksys.groupfinal.services.UserService;
 
@@ -28,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
+	private final CompanyRepository companyRepository;
   private final FullUserMapper fullUserMapper;
   private final BasicUserMapper basicUserMapper;
 	private final CredentialsMapper credentialsMapper;
@@ -71,14 +74,22 @@ public class UserServiceImpl implements UserService {
 	}
 
     @Override
-    public FullUserDto createUser(UserRequestDto userRequestDto) {
+    public FullUserDto createUser(UserRequestDto userRequestDto, Long companyId) {
         credentialsErrorChecking(userRequestDto.getCredentials());
         if (validateUsername(userRequestDto.getCredentials().getUsername())) {
             throw new BadRequestException("A user with this username already exists.");
         }
         User newUser = basicUserMapper.requestDtoToEntity(userRequestDto);
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            throw new NotFoundException("A company with the provided id does not exist.");
+        }
         newUser.setActive(true);
-        return fullUserMapper.entityToFullUserDto(userRepository.saveAndFlush(newUser));
+        newUser.getCompanies().add(company.get());
+        User res = userRepository.saveAndFlush(newUser);
+        company.get().getEmployees().add(res);
+        companyRepository.saveAndFlush(company.get());
+        return fullUserMapper.entityToFullUserDto(res);
     }
 
     @Override
