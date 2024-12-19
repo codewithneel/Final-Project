@@ -3,7 +3,8 @@
   <!-- Header -->
   <div class="header">
     <h1>Projects for Team 1</h1>
-    <button class="new-btn" (click)="openCreateModal()">New</button>
+    <!-- Show "New" button only if the user is an admin -->
+    <button *ngIf="isAdmin" class="new-btn" (click)="openCreateModal()">New</button>
   </div>
 
   <!-- Project List -->
@@ -16,12 +17,12 @@
           {{ project.isActive ? 'Active' : 'Inactive' }}
         </span>
       </div>
-      <button (click)="openEditModal(project)">Edit</button>
+      <button *ngIf="isAdmin" (click)="openEditModal(project)">Edit</button>
     </div>
   </div>
 
   <!-- Create Project Modal -->
-  <div *ngIf="showCreateModal" class="modal-overlay">
+  <div *ngIf="showCreateModal && isAdmin" class="modal-overlay">
     <div class="modal">
       <h2>Create Project</h2>
       <input placeholder="Project Name" [(ngModel)]="newProject.name" />
@@ -32,7 +33,7 @@
   </div>
 
   <!-- Edit Project Modal -->
-  <div *ngIf="showEditModal" class="modal-overlay">
+  <div *ngIf="showEditModal && isAdmin" class="modal-overlay">
     <div class="modal">
       <h2>Edit Project</h2>
       <input placeholder="Project Name" [(ngModel)]="currentProject.name" />

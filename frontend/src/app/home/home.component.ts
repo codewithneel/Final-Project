@@ -8,10 +8,10 @@ import { CurrentUserService } from '../current-user.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  userData: any = null;       // Store user data
-  announcements: any[] = [];  // Store all fetched announcements
-  isAdmin: boolean = false;   // Check if user is an admin
-  showCreateForm: boolean = false; // Toggle pop-up visibility
+  announcements: any[] = [];
+  currentCompanyId: number | null = null;
+  isAdmin: boolean = false;
+  showCreateForm: boolean = false;
   newAnnouncement = { title: '', message: '' }; // Form inputs
 
   baseUrl = 'http://localhost:8080';
@@ -22,41 +22,47 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Fetch user data and check admin status
-    this.userData = this.currentUserService.getUserData();
-    this.isAdmin = this.userData?.admin || false;
+    this.currentCompanyId = +this.currentUserService.getCurrentCompany(); // Convert to number
+    console.log('Current Company ID:', this.currentCompanyId);
 
-    // Fetch announcements if companies exist
-    if (this.userData && this.userData.companies) {
-      this.fetchAnnouncementsForCompanies(this.userData.companies);
+    const userData = this.currentUserService.getUserData();
+    this.isAdmin = userData?.admin || false;
+
+    if (this.currentCompanyId) {
+      this.fetchAnnouncements(this.currentCompanyId);
+    } else {
+      console.warn('No current company selected.');
     }
   }
 
-  fetchAnnouncementsForCompanies(companies: any[]): void {
-    companies.forEach(company => {
-      this.http.get<any[]>(`${this.baseUrl}/company/${company.id}/announcements`).subscribe({
-        next: (response) => {
-          this.announcements.push(...response);
-        },
-        error: (error) => {
-          console.error(`Error fetching announcements for company ${company.id}:`, error);
-        }
-      });
+  fetchAnnouncements(companyId: number): void {
+    this.http.get<any[]>(`${this.baseUrl}/company/${companyId}/announcements`).subscribe({
+      next: (response) => {
+        console.log(`Announcements for company ${companyId}:`, response);
+        this.announcements = response;
+      },
+      error: (error) => {
+        console.error(`Error fetching announcements for company ${companyId}:`, error);
+      }
     });
   }
 
   // Submit new announcement
   createAnnouncement(): void {
-    const companyId = this.userData?.companies[0]?.id; // Default to first company
+    if (!this.currentCompanyId) {
+      console.error('No company selected for creating an announcement.');
+      return;
+    }
+
     const payload = { title: this.newAnnouncement.title, message: this.newAnnouncement.message };
 
-    this.http.post(`${this.baseUrl}/announcements/company/${companyId}/user/${this.userData.id}`, payload)
+    this.http.post(`${this.baseUrl}/announcements/company/${this.currentCompanyId}/user/${this.currentUserService.getUserData()?.id}`, payload)
       .subscribe({
         next: (response) => {
           console.log('Announcement Created:', response);
-          this.announcements.push(response); // Add to list
-          this.showCreateForm = false; // Close the form
-          this.newAnnouncement = { title: '', message: '' }; // Reset form
+          this.announcements.push(response);
+          this.showCreateForm = false;
+          this.newAnnouncement = { title: '', message: '' };
         },
         error: (error) => {
           console.error('Error creating announcement:', error);
