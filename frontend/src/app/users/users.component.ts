@@ -117,9 +117,11 @@ export class UsersComponent implements OnInit {
     this.form.reset();
     this.email = '';
     this.formFlag = false;
+    // this.employeeTableFlag = true;
   }
 
   addUser(){
     this.addEmailFlag = true;
+    // this.employeeTableFlag = false;
   }
 }

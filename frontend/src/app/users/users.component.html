@@ -1,37 +1,38 @@
 <app-navbar></app-navbar>
 <h1>User Registry</h1>
 <p>A general view of all your members in your organization</p>
+<div *ngIf="employeeTableFlag">
+    <mat-table [dataSource]="employees">
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+        </ng-container>
 
-<mat-table *ngIf="employeeTableFlag" [dataSource]="employees">
-    <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.active}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="active">
-        <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.active}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="admin">
+            <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.admin}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="admin">
-        <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.admin}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
-<button (click)="addUser()">Add User</button>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <button (click)="addUser()">Add User</button>
+</div>
 <div *ngIf="addEmailFlag">
     <input placeholder="Email" [(ngModel)]="email" />
     <button (click)="validateEmail()">Add email</button>
