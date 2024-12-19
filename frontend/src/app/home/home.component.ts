@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CurrentUserService } from '../current-user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -18,10 +19,15 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private currentUserService: CurrentUserService,
+    private router: Router,
     private http: HttpClient
   ) {}
 
   ngOnInit(): void {
+    if(this.currentUserService.getSharedloggedIN()==false)
+    {
+      this.router.navigate(['']); 
+    }
     this.currentCompanyId = +this.currentUserService.getCurrentCompany(); // Convert to number
     console.log('Current Company ID:', this.currentCompanyId);
 

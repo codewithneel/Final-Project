@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CurrentUserService } from '../current-user.service';
 
@@ -32,10 +32,17 @@ export class ProjectsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
+    private router: Router,
     private currentUserService: CurrentUserService
   ) {}
 
   ngOnInit(): void {
+
+    if(this.currentUserService.getSharedloggedIN()==false)
+    {
+      this.router.navigate(['']); 
+    }
+
     this.currentCompanyId = +this.currentUserService.getCurrentCompany();
     console.log('Current Company ID:', this.currentCompanyId);
 
