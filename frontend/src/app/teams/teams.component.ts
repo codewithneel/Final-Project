@@ -26,6 +26,8 @@ export class TeamsComponent implements OnInit {
   teamMembers: any[] = [];
   selectedItem: any=null;
 
+  isAdmin:boolean=false;
+
   ngOnInit(): void {
 
     if(this._currentUserService.getSharedloggedIN()==false)
@@ -33,13 +35,15 @@ export class TeamsComponent implements OnInit {
       this.router.navigate(['']); 
     }
 
+    this.isAdmin=this._currentUserService.getUserData().admin
+
     this._currentUserService.userData$.subscribe((value) => {
       this.currentUser = value;
     });
    
     this.currentUser=this._currentUserService.getUserData();
     this.currentCompany=this._currentUserService.getCurrentCompany();
-    this.teams=this.currentUser.teams
+    this.getTeamMates();
 
     if (this.currentUser && this.currentUser.companies.length > 0)
     {
@@ -58,6 +62,11 @@ export class TeamsComponent implements OnInit {
    
   }
 
+  editProjects(teamId:number)
+  {
+    this.router.navigate(['/projects'], { queryParams: { teamId: teamId}}); 
+  }
+
   addToSelectedMembers()
   {
     if (this.selectedItem && !this.selectedMembers.includes(this.selectedItem)) {
@@ -69,6 +78,27 @@ export class TeamsComponent implements OnInit {
       console.warn("Member is already selected or invalid.");
     }
   
+  }
+
+  getTeamMates()
+  { 
+    fetch(`http://localhost:8080/team/${this.currentCompany}/teammates`, {
+      method: "GET",
+      headers: {
+      "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Team mates are Response:", data);
+      this.teams=data;
+      
+      
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      
+  });
   }
 
   removeMember(empId:number)
@@ -116,10 +146,8 @@ export class TeamsComponent implements OnInit {
     .then((response) => response.json())
     .then((data) => {
       console.log("Response from post team:", data);
-      
-      this.currentUser=this._currentUserService.getUserData();
-      this.teams=this.currentUser.teams
-      
+      this.getTeamMates();
+
       this.addTeamMember=false;  
       
     })
@@ -133,10 +161,6 @@ export class TeamsComponent implements OnInit {
 
   async getNumOfProjects(teamId:number) 
   {
-    
-    /*localhost:8080/company/6/teams/11/projects `http://localhost:8080/6/teams/${teamId}/projects` */
-    /* `http://localhost:8080/company/6/teams/${teamId}/projects` */
-    /* `http://localhost:8080/company/${currentCompany.id}/teams/${teamId}/projects`  */
     fetch(`http://localhost:8080/company/${this.currentCompany}/teams/${teamId}/projects`, {
       method: "GET",
       headers: {

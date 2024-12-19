@@ -1,12 +1,23 @@
 <nav *ngIf="loggedIN">
-  <a href="https://www.allaboutfasttrack.com/">
-      <img src="assets/images/folder_logo.png" class="logo" alt="Company Logo">
-  </a>
+  <div class="leftSide">
+    
+        <img src="assets/images/folder_logo.png" class="logo" alt="Company Logo">
+        <div *ngIf="isAdmin">
+          <p>ACTING AS ADMIN</p>
+        </div>
+
+        <div *ngIf="isAdmin==false">
+          <p>{{usersFNandLI}}</p>
+        </div>
+        
+    
+  </div>
+  
   <ul>
       <li><a routerLink="/home">Home</a></li>
       <li><a routerLink="/company">Company</a></li>
-      <li><a routerLink="/teams">Teams</a></li>
-      <li><a routerLink="/users">Users</a></li>
+      <li ><a routerLink="/teams">Teams</a></li>
+      <li *ngIf="isAdmin"><a routerLink="/users">Users</a></li>
       <li><a href="">Logout</a></li>
   </ul>
 </nav>

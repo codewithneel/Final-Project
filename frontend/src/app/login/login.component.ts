@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit {
     this._currentUserService.sharedloggedIN$.subscribe((value) => {
       this.loggedIN = value;
     });
+
   }
 
 }

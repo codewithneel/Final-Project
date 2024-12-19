@@ -15,11 +15,12 @@
         <div *ngFor="let tm of team.teammates">
             <p>{{tm.profile.firstName}} {{tm.profile.lastName[0]}}.</p>
         </div>
-        <button>Go To Projects</button>
+        <button (click)="editProjects(team.id)">Go To Projects</button>
         <br>
     </div>
     <br>
-    <button (click)="addTeamMember=true">Add Team Member</button>
+    
+    <button (click)="addTeamMember=true" *ngIf="isAdmin">New Team</button>
     <br>
 </div>
 

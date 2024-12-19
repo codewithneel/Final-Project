@@ -17,6 +17,21 @@ nav
    margin-top: 25px;
 }
 
+.leftSide
+{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap:25px;
+    white-space: nowrap;
+}
+.leftSide p
+{
+    margin: 0; 
+    font-size:20px;
+
+}
+
 nav ul 
 {
     display: flex;
@@ -60,4 +75,5 @@ nav ul li a:hover::after
 {
     width: 50px;
 }
+
 
