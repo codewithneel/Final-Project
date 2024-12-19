@@ -2,7 +2,6 @@
 <div *ngIf="addTeamMember==false">
 
     <h1>Teams</h1>
-    <p>PS also remember to update the code for how the members are selected according to the Company</p>
     <div    *ngFor="let team of teams">
         <p>{{team.name}}</p>
         
@@ -50,8 +49,8 @@
             
             
         </div>  
-        <button >Submit</button>
-
+        <button (click)="postTeam()">Submit</button>
+        
             
     </div>
 </div>

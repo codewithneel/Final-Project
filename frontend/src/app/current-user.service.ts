@@ -13,6 +13,11 @@ export class CurrentUserService {
     this.sharedloggedIN.next(value);
   }
 
+  getSharedloggedIN()
+  {
+    return this.sharedloggedIN.value;
+  }
+
   userData = new BehaviorSubject<any>(null); 
   userData$ = this.userData.asObservable();
 
@@ -21,6 +26,8 @@ export class CurrentUserService {
   currentCompany$= this.currentCompany.asObservable();
 
   constructor() { }
+
+  
 
   setUserData(data: any) {
     this.userData.next(data);
