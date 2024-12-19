@@ -10,7 +10,7 @@ public interface UserService {
 	FullUserDto login(CredentialsDto credentialsDto);
 
 
-    FullUserDto createUser(UserRequestDto userRequestDto);
+    FullUserDto createUser(UserRequestDto userRequestDto, Long companyId);
 
     FullUserDto patchUserProfile(String username, ProfileDto profileDto);
 

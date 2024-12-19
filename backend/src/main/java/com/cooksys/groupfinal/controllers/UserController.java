@@ -23,9 +23,9 @@ public class UserController {
         return userService.login(credentialsDto);
     }
 
-    @PostMapping()
-    public FullUserDto createUser(@RequestBody UserRequestDto userRequestDto) {
-        return userService.createUser(userRequestDto);
+    @PostMapping("/{companyId}")
+    public FullUserDto createUser(@RequestBody UserRequestDto userRequestDto, @PathVariable Long companyId) {
+        return userService.createUser(userRequestDto, companyId);
     }
 
     @PatchMapping("/{username}/profile")
