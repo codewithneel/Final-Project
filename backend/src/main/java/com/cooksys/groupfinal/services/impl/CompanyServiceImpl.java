@@ -11,6 +11,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.groupfinal.dtos.AnnouncementDto;
+import com.cooksys.groupfinal.dtos.BasicUserDto;
 import com.cooksys.groupfinal.dtos.CompanyDto;
 import com.cooksys.groupfinal.dtos.FullUserDto;
 import com.cooksys.groupfinal.dtos.ProjectDto;
@@ -23,6 +24,7 @@ import com.cooksys.groupfinal.entities.User;
 import com.cooksys.groupfinal.exceptions.BadRequestException;
 import com.cooksys.groupfinal.exceptions.NotFoundException;
 import com.cooksys.groupfinal.mappers.AnnouncementMapper;
+import com.cooksys.groupfinal.mappers.BasicUserMapper;
 import com.cooksys.groupfinal.mappers.CompanyMapper;
 import com.cooksys.groupfinal.mappers.ProjectMapper;
 import com.cooksys.groupfinal.mappers.TeamMapper;
@@ -43,6 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
 	private final TeamRepository teamRepository;
 	private final CompanyMapper companyMapper;
 	private final FullUserMapper fullUserMapper;
+	private final BasicUserMapper basicUserMapper;
 	private final AnnouncementMapper announcementMapper;
 	private final TeamMapper teamMapper;
 	private final ProjectMapper projectMapper;
@@ -115,14 +118,14 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public void addUserToCompany(Long companyId, Long userId) {
+	public BasicUserDto addUserToCompany(Long companyId, Long userId) {
 		Company company = findCompany(companyId);
 		User user = findUser(userId, "A user with the provided id does not exist");
 		if(!company.getEmployees().contains(user)) {
 			company.getEmployees().add(user);
-			//user.getCompanies().add(company);
+			user.getCompanies().add(company);
 			companyRepository.saveAndFlush(company);
-			//userRepository.saveAndFlush(user);	
+			return basicUserMapper.entityToBasicUserDto(userRepository.saveAndFlush(user));	
 		} else {
 			throw new BadRequestException("User is an employee of this company");
 		}

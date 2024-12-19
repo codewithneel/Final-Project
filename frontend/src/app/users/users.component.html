@@ -31,21 +31,42 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
-    <button (click)="addUser()">Add User</button>
 </div>
-<div *ngIf="addEmailFlag">
-    <input placeholder="Email" [(ngModel)]="email" />
-    <button (click)="validateEmail()">Add email</button>
-</div>
-<div *ngIf="formFlag" [formGroup]="form">
-    <input type="text" formControlName="username" placeholder="username">
-    <input type="text" formControlName="firstName" placeholder="first name">
-    <input type="text" formControlName="lastName" placeholder="last name">
-    <input type="tel" formControlName="phone" placeholder="phone number">
-    <input type="password" formControlName="password" placeholder="password">
-    <label for="adminCheckbox">Make user an admin?</label>
-    <input id="adminCheckbox" type="checkbox" formControlName="admin">
-    <button (click)="createUser()" [disabled]="!form.valid">Submit</button>
-</div>
+
+<!-- Button trigger modal -->
+<button (click)="addUser()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add User
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
+          <button (click)="resetForm()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="addEmailFlag" [formGroup]="form">
+                <input type="text" formControlName="email" placeholder="email">
+                <button (click)="validateEmail()">Add email</button>
+            </div>
+            <div *ngIf="formFlag" [formGroup]="form">
+                <input type="text" formControlName="username" placeholder="username">
+                <input type="text" formControlName="firstName" placeholder="first name">
+                <input type="text" formControlName="lastName" placeholder="last name">
+                <input type="tel" formControlName="phone" placeholder="phone number">
+                <input type="password" formControlName="password" placeholder="password">
+                <label for="adminCheckbox">Make user an admin?</label>
+                <input id="adminCheckbox" type="checkbox" formControlName="admin">
+                <button (click)="createUser()" [disabled]="!form.valid">Submit</button>
+            </div>
+            <div *ngIf="isUserCreated">User Successfully Created!</div>
+            <div *ngIf="isEmp">Employee already works for this company! Shame on you!</div>
+            <div *ngIf="isExistingUserInserted">User inserted into our lineup!</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 

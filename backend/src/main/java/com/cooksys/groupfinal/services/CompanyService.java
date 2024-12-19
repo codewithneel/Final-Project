@@ -3,6 +3,7 @@ package com.cooksys.groupfinal.services;
 import java.util.Set;
 
 import com.cooksys.groupfinal.dtos.AnnouncementDto;
+import com.cooksys.groupfinal.dtos.BasicUserDto;
 import com.cooksys.groupfinal.dtos.CompanyDto;
 import com.cooksys.groupfinal.dtos.FullUserDto;
 import com.cooksys.groupfinal.dtos.ProjectDto;
@@ -20,7 +21,7 @@ public interface CompanyService {
 
 	Set<CompanyDto> getUserCompanies(Long userId);
 
-	void addUserToCompany(Long companyId, Long userId);
+	BasicUserDto addUserToCompany(Long companyId, Long userId);
 
 
 

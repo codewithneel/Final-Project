@@ -31,7 +31,7 @@ export class CompanyComponent implements OnInit {
 
   onCompanyChange(): void{
     this.currentUserService.setCurrentCompany(this.selectedCompany);
-    console.log(this.currentUserService.getCurrentCompany());
+    console.log("Company id: " + this.currentUserService.getCurrentCompany());
     this.router.navigateByUrl("/home");
   }
 }

@@ -17,23 +17,24 @@ interface employee {
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  id: number = -1;
+  companyId: number = -1;
   employees: employee[] = [];
-  // dataSource = new MatTableDataSource<any>(this.employees);
-  employeeTableFlag: boolean = false;
-  addEmailFlag: boolean = false;
-  formFlag: boolean = false;
-  email: string = ""
   displayedColumns: string[] = ["name", "email", "active", "admin", "status"]
   form: FormGroup = this.fb.group({
-    //email: [this.email, Validators.required, Validators.email],
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    phone: ['', Validators.required],
-    password: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
+    password: ['', [Validators.required]],
     admin: [false],
-    username: ['', Validators.required]
+    username: ['', [Validators.required]]
   })
+  formFlag: boolean = false;
+  employeeTableFlag: boolean = false;
+  addEmailFlag: boolean = false;
+  isUserCreated: boolean = false; 
+  isEmp: boolean = false; 
+  isExistingUserInserted: boolean = false;
 
   constructor(private fb: FormBuilder, private currentUserService: CurrentUserService, private router: Router){}
 
@@ -41,46 +42,43 @@ export class UsersComponent implements OnInit {
     if(!this.currentUserService.hasSession()) {
       this.router.navigateByUrl("/");
     }
-    this.id = this.currentUserService.getCurrentCompany()
-    fetch(`http://localhost:8080/company/${this.id}/users`)
+    this.companyId = this.currentUserService.getCurrentCompany()
+    fetch(`http://localhost:8080/company/${this.companyId}/users`)
     .then((response) => response.json())
     .then((data) => {
       for(const emp of data){
-        let isAdmin = emp.admin ? "Yes" : "No";
-        let isActive = emp.active ? "Yes" : "No";
-        this.employees.push({
-          name: emp.profile.firstName + " " + emp.profile.lastName,
-          email: emp.profile.email,
-          active: isActive,
-          admin: isAdmin,
-          status: emp.status,
-        })
+        this.addEmployeeToTable(emp);
       }
       this.employeeTableFlag = true;
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    .catch((error) => {console.error("Error:", error);});
   }
 
-  validateEmail(){
+  validateEmail(): void{
     this.addEmailFlag = false;
-    fetch(`http://localhost:8080/search/user/${this.email}`)
+    fetch(`http://localhost:8080/search/user/${this.form.value.email}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
       if(data.message === "User does not exist in db"){
-        console.log("New user")
+        this.formFlag = true
+      }else if(!((this.employees.find(emp => data.profile.email === emp.email)) === undefined)) {
+        this.isEmp = true;
+      }else{
+        fetch(`http://localhost:8080/company/${this.companyId}/user/${data.id}`, {method: "PATCH"})
+        .then(response => response.json())
+        .then((data) => {
+          this.addEmployeeToTable(data);
+          this.employees = [... this.employees];
+          this.isExistingUserInserted = true;
+        })
+        .catch(error => console.log(error));
       }
     })
-    .then(() => this.formFlag = true)
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    .catch((error) => {console.error("Error:", error);});
   }
 
-  createUser(){
-    fetch(`http://localhost:8080/users/${this.id}`, {
+  createUser(): void{
+    fetch(`http://localhost:8080/users/${this.companyId}`, {
       method: "POST",
       body: JSON.stringify({
         credentials: {
@@ -90,38 +88,46 @@ export class UsersComponent implements OnInit {
         profile: {
           firstName: this.form.value.firstName,
           lastName: this.form.value.lastName,
-          email: this.email,
+          email: this.form.value.email,
           phone: this.form.value.phone
         },
         admin: this.form.value.admin
       })
       ,
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
+      headers: {"Content-type": "application/json; charset=UTF-8"}
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
-      let isAdmin = data.admin ? "Yes" : "No";
-      let isActive = data.active ? "Yes" : "No";
-      this.employees.push({
-        name: data.profile.firstName + " " + data.profile.lastName,
-        email: data.profile.email,
-        active: isActive,
-        admin: isAdmin,
-        status: data.status,
-      });
-      console.log(this.employees)
+      this.addEmployeeToTable(data);
+      this.employees = [... this.employees];
+      this.formFlag = false;
+      this.form.reset();
+      this.isUserCreated = true; 
     });
-    this.form.reset();
-    this.email = '';
-    this.formFlag = false;
-    // this.employeeTableFlag = true;
   }
 
-  addUser(){
+  addUser(): void {
+    this.resetForm();
     this.addEmailFlag = true;
-    // this.employeeTableFlag = false;
+  }
+
+  resetForm(): void {
+    this.form.reset();
+    this.isEmp = false;
+    this.formFlag = false;
+    this.isUserCreated = false;
+    this.isExistingUserInserted = false;
+  }
+
+  private addEmployeeToTable(emp: any): void{
+    let isAdmin = emp.admin ? "Yes" : "No";
+    let isActive = emp.active ? "Yes" : "No";
+    this.employees.push({
+      name: emp.profile.firstName + " " + emp.profile.lastName,
+      email: emp.profile.email,
+      active: isActive,
+      admin: isAdmin,
+      status: emp.status,
+    })
   }
 }

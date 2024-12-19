@@ -14,7 +14,6 @@ import { ProjectsComponent } from './projects/projects.component';
 import { CurrentUserService } from './current-user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
-import { MatTableDataSource } from '@angular/material/table';
 
 @NgModule({
   declarations: [
