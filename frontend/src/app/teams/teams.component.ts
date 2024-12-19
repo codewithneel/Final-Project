@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentUserService } from '../current-user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-teams',
@@ -9,12 +10,13 @@ import { CurrentUserService } from '../current-user.service';
 export class TeamsComponent implements OnInit {
 
 
-  constructor(public _currentUserService: CurrentUserService){}
+  constructor(public _currentUserService: CurrentUserService, private router: Router){}
 
   teams: any[] = [];
   teamProjectLengthDict: {[key:number]: number}  = {};
 
   currentUser:any=null;
+  currentCompany:any=null;
   
 
   addTeamMember:boolean=false;
@@ -24,19 +26,45 @@ export class TeamsComponent implements OnInit {
   teamMembers: any[] = [];
   selectedItem: any=null;
 
+  isAdmin:boolean=false;
+
   ngOnInit(): void {
+
+    if(this._currentUserService.getSharedloggedIN()==false)
+    {
+      this.router.navigate(['']); 
+    }
+
+    this.isAdmin=this._currentUserService.getUserData().admin
+
+    this._currentUserService.userData$.subscribe((value) => {
+      this.currentUser = value;
+    });
+   
     this.currentUser=this._currentUserService.getUserData();
-    this.teams=this.currentUser.teams
+    this.currentCompany=this._currentUserService.getCurrentCompany();
+    this.getTeamMates();
 
     if (this.currentUser && this.currentUser.companies.length > 0)
     {
-      this.teamMembers = this.currentUser.companies[0].employees;
-    } 
+      for(let company of this.currentUser.companies)
+      {
+        if(company.id==this.currentCompany)
+        {
+          this.teamMembers=company.employees;
+        }
+      }
+    }
     else
     {
       this.teamMembers = []; 
     }
    
+  }
+
+  editProjects(teamId:number)
+  {
+    this.router.navigate(['/projects'], { queryParams: { teamId: teamId}}); 
   }
 
   addToSelectedMembers()
@@ -50,6 +78,27 @@ export class TeamsComponent implements OnInit {
       console.warn("Member is already selected or invalid.");
     }
   
+  }
+
+  getTeamMates()
+  { 
+    fetch(`http://localhost:8080/team/${this.currentCompany}/teammates`, {
+      method: "GET",
+      headers: {
+      "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Team mates are Response:", data);
+      this.teams=data;
+      
+      
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      
+  });
   }
 
   removeMember(empId:number)
@@ -74,41 +123,32 @@ export class TeamsComponent implements OnInit {
    
   }
 
-  async postTeam(companyId:number)
+  async postTeam()
   {
-    console.log("team name is "+this.teamName)
-    console.log("Description is "+this.description);
-    console.log("team members are ");
-    for(var i=0;i<this.selectedMembers.length;i++)
-    {
-      console.log("member "+(i+1)+": "+this.selectedMembers[i]);
-    }
-    fetch(`http://localhost:8080/team/${companyId}`, {
+   
+    const payload = {
+      name: this.teamName,
+      description: this.description,  // Correct field name
+      teammates: this.selectedMembers.map(member => ({
+        id: member.id,  // Send only the ID of teammates
+      })),
+    };
+
+    console.log("Payload being sent:", payload)
+
+    fetch(`http://localhost:8080/team/${this.currentCompany}`, {
       method: "POST",
-      body: JSON.stringify({
-        username: "",
-        password: "this.password"
-      })
-      ,
+      body: JSON.stringify(payload),
       headers: {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Response:", data);
-      
-      this._currentUserService.setUserData(data);
-      if(data.message=="The username provided does not belong to an active user.")
-      {
-        this._currentUserService.setSharedVariableloggedIN(false);
-      }
-      else
-      {
-        this._currentUserService.setSharedVariableloggedIN(true);
-    
-      }
-     
+      console.log("Response from post team:", data);
+      this.getTeamMates();
+
+      this.addTeamMember=false;  
       
     })
     .catch((error) => {
@@ -121,9 +161,7 @@ export class TeamsComponent implements OnInit {
 
   async getNumOfProjects(teamId:number) 
   {
-    
-    /*localhost:8080/company/6/teams/11/projects `http://localhost:8080/6/teams/${teamId}/projects` */
-    fetch(`http://localhost:8080/company/6/teams/${teamId}/projects`, {
+    fetch(`http://localhost:8080/company/${this.currentCompany}/teams/${teamId}/projects`, {
       method: "GET",
       headers: {
       "Content-type": "application/json; charset=UTF-8"
