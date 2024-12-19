@@ -36,7 +36,7 @@ import { MatTableModule } from '@angular/material/table';
   providers: [CurrentUserService],
   bootstrap: [AppComponent]
 })
-export class AppModule
+export class AppModule 
 {
   loggedIN:boolean=false;
 
