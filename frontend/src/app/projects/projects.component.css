@@ -1,26 +1,44 @@
+/* General styling for the projects page */
 .projects-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  color: #ddd;
-  font-family: Arial, sans-serif;
+  color: #ffffff;
+  font-family: 'Quicksand', sans-serif;
+  background-color: #0a1a33; /* Dark blue background */
+  border-radius: 10px;
 }
 
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  color: #1BA098; /* Updated light blue */
 }
 
 .new-btn {
-  background-color: teal;
+  background-color: #1BA098; /* Updated light blue */
   color: white;
-  padding: 10px 15px;
+  font-weight: bold;
   border: none;
   border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+.new-btn:hover {
+  background-color: #158075; /* Darker teal for hover */
+}
+
+/* Project List */
 .projects-list {
   display: flex;
   flex-direction: column;
@@ -31,51 +49,125 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1e2b3a;
-  padding: 15px;
+  background-color: #102347; /* Slightly lighter blue for cards */
+  padding: 20px;
   border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-card h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.project-card p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #cccccc;
 }
 
 .project-card span.active {
-  color: green;
+  color: #1BA098; /* Updated light blue for active */
+  font-weight: bold;
 }
 
 .project-card span.inactive {
-  color: red;
+  color: #ff5c5c; /* Red for inactive */
+  font-weight: bold;
 }
 
 button {
-  padding: 5px 10px;
+  background-color: #DEB992; /* Updated light blue */
+  color: white;
+  padding: 10px;
+  border: none;
   border-radius: 5px;
+  font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+button:hover {
+  background-color: #158075; /* Darker teal for hover */
+}
+
+/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
+/* Modal styling */
 .modal {
-  background: #0b1829;
+  background-color: #0a1a33;
+  padding: 25px;
+  width: 400px;
+  border-radius: 10px;
   color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  font-family: 'Montserrat', sans-serif;
+  color: #1BA098; /* Updated light blue for title */
+  margin: 0 0 10px;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #102347; /* Lighter dark blue */
+  color: white;
+}
+
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+  outline: none;
+  border-color: #1BA098; /* Updated light blue */
 }
 
 .close-btn {
   align-self: flex-end;
-  background: red;
+  background-color: red;
   color: white;
   border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background-color: #cc0000;
+}
+
+.modal button {
+  background-color: #1BA098; /* Updated light blue */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal button:hover {
+  background-color: #158075; /* Darker teal for hover */
 }
