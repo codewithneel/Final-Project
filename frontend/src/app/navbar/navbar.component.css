@@ -5,7 +5,7 @@ nav
     justify-content: space-between;
     width: 100%;
     padding: 0 20px; 
-    border-bottom: 3px solid purple;
+    border-bottom: 3px solid #33c4ff;
     margin-bottom: 25px;
 }
 
@@ -15,6 +15,10 @@ nav
    height: 100px;
    margin-left: 25px;
    margin-top: 25px;
+   align-items: center;
+   border-radius: 50%;
+   border: 7px solid #0D3A59;
+   background-color: #0D3A59;
 }
 
 .leftSide
@@ -22,8 +26,11 @@ nav
     display: flex;
     align-items: center;
     flex-direction: row;
-    gap:25px;
+    gap:30px;
     white-space: nowrap;
+    color:#F24E1E;
+    margin-bottom: 20px;
+    font-family: "Mulish";
 }
 .leftSide p
 {
@@ -54,6 +61,8 @@ nav ul li
 nav ul li a
 {
     /* color: white; */
+    color:#33c4ff;
+    font-family: "Mulish";
     text-decoration: none;
     font-size: 18px;
     position: relative;
@@ -64,7 +73,7 @@ nav ul li a::after
     content:'';
     width: 0;
     height: 3px;
-    background: purple;
+    background: #33c4ff;;
     position: absolute;
     left:0;
     bottom: -6px;
