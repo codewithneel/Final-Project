@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       console.log("Response:", data);
       
       this._currentUserService.setUserData(data);
-      if(data.message=="The username provided does not belong to an active user.")
+      if(data.message=="The username provided does not belong to an active user." || data.message=="The provided credentials are invalid.")
       {
         this._currentUserService.setSharedVariableloggedIN(false);
         this.failedLogIn=true;
