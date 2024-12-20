@@ -32,9 +32,9 @@ export class UsersComponent implements OnInit {
   formFlag: boolean = false;
   employeeTableFlag: boolean = false;
   addEmailFlag: boolean = false;
-  isUserCreated: boolean = false; 
-  isEmp: boolean = false; 
-  isExistingUserInserted: boolean = false;
+  // isUserCreated: boolean = false; 
+  // isEmp: boolean = false; 
+  // isExistingUserInserted: boolean = false;
 
   constructor(private fb: FormBuilder, private currentUserService: CurrentUserService, private router: Router){}
 
@@ -62,14 +62,18 @@ export class UsersComponent implements OnInit {
       if(data.message === "User does not exist in db"){
         this.formFlag = true
       }else if(!((this.employees.find(emp => data.profile.email === emp.email)) === undefined)) {
-        this.isEmp = true;
+        // this.isEmp = true;
+        this.addEmailFlag = true;
+        window.alert("Employee already works for this company! Shame on you!")
       }else{
         fetch(`http://localhost:8080/company/${this.companyId}/user/${data.id}`, {method: "PATCH"})
         .then(response => response.json())
         .then((data) => {
+          window.alert("Existing user added to the lineup")
+          this.addEmailFlag = true;
           this.addEmployeeToTable(data);
           this.employees = [... this.employees];
-          this.isExistingUserInserted = true;
+          // this.isExistingUserInserted = true;
         })
         .catch(error => console.log(error));
       }
@@ -98,11 +102,13 @@ export class UsersComponent implements OnInit {
     })
     .then((response) => response.json())
     .then((data) => {
+      window.alert("User successfully added");
       this.addEmployeeToTable(data);
       this.employees = [... this.employees];
       this.formFlag = false;
       this.form.reset();
-      this.isUserCreated = true; 
+      this.addEmailFlag = true;
+      // this.isUserCreated = true; 
     });
   }
 
@@ -113,10 +119,10 @@ export class UsersComponent implements OnInit {
 
   resetForm(): void {
     this.form.reset();
-    this.isEmp = false;
+    // this.isEmp = false;
     this.formFlag = false;
-    this.isUserCreated = false;
-    this.isExistingUserInserted = false;
+    // this.isUserCreated = false;
+    // this.isExistingUserInserted = false;
   }
 
   private addEmployeeToTable(emp: any): void{
