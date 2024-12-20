@@ -4,3 +4,215 @@
     gap:15px;
     margin-bottom: 15px;
 }
+
+h1
+{
+    color:#33c4ff;
+    display: flex;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: "Mulish";
+}
+
+.MakeNewTeamButton
+{
+    display: flex;
+    width: 100%; /* Ensures the div spans the full width */
+    margin-left: 400px;
+}
+
+.MakeNewTeamButton button
+{
+    width: 250px;
+    height:25px;
+}
+
+.teamBlock {
+    background-color: #0B2D45;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%; /* Use full width of the parent */
+    max-width: 500px; /* Set a reasonable max width */
+    margin: 0 auto; /* Centers the block */
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 10px; 
+}
+.allTeamBlocks
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 1500px;
+}
+
+.overAllBlock
+{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;  
+
+}
+
+.teamHeader {
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px; 
+    border-bottom: 1px solid #DEB992;
+    font-family: "Mulish";
+}
+
+.teamHeader2 {
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 10px; 
+    font-family: "Mulish";
+    font-weight: bold; 
+}
+
+.teamHeader .teamName {
+    margin: 0; 
+    font-size: 1.2rem; 
+    font-weight: bold; 
+}
+
+.teamHeader .numOfProjects {
+    margin: 0; 
+    font-size: 1rem; 
+}
+.teamListOuter
+{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.teamList {
+    display: grid;
+    grid-template-columns:  300px ; /* Two columns, each taking equal width */
+    gap: 15px; /* Spacing between rows and columns */
+    justify-content: center; /* Centers the grid inside the parent */
+    align-items: center; /* Aligns items vertically in each cell */
+    margin: 10px auto; /* Centers the grid block */
+    width: 100%; /* Ensures grid uses full width of its parent */
+    max-width: 400px; /* Prevents it from exceeding the parent width */
+}
+
+.teamList p, .selectedMembersBox p
+{
+    background-color: #1BA098;
+    font-family: "Mulish";
+    color: #FFFFFF;
+    text-align: center;
+    padding: 10px; 
+    border-radius: 5px; 
+    font-weight: bold;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    box-sizing: border-box; 
+}
+
+.EditProjects
+{
+    margin-top: auto;
+}
+
+ button 
+ {
+    background-color: #33c4ff; 
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover
+{
+    background-color: #1a97d4;
+}
+
+/* Create Team Overlay */
+.topInput
+{
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    gap:15px;
+}
+
+.topInput p
+{
+    color:#DEB992;
+    font-size: 16px;
+    font-family: "Mulish";
+}
+
+.topInput input
+{
+    background-color: #051622;
+    color:#DEB992;
+}
+
+.add-team-form h2
+{
+    color:#DEB992;
+    font-size: 27px;
+    font-family: 'Inter';
+}
+
+.selectMembers
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.selectedMembersBox
+{
+    display: flex;
+    border-radius: 5px; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    margin-bottom: 20px;
+    width: 350px;
+    gap:50px
+    
+}
+
+.potentialTeamMember input
+{
+    margin-top: 10px;
+    height: 50px;
+    width: 50px;
+}
+
+.postTeamButton
+{
+    display: flex;
+    justify-content: center; 
+    align-items: center
+}
+
+.postTeamButton button
+{
+    background-color: #1BA098;
+    width: 200px;
+    height: 45px;
+    margin-bottom: 30px;
+}
+

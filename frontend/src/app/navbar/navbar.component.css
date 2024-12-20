@@ -5,7 +5,7 @@ nav
     justify-content: space-between;
     width: 100%;
     padding: 0 20px; 
-    border-bottom: 3px solid #33c4ff;
+    border-bottom: 3px solid #DEB992;
     margin-bottom: 25px;
 }
 
@@ -73,7 +73,7 @@ nav ul li a::after
     content:'';
     width: 0;
     height: 3px;
-    background: #33c4ff;;
+    background: #33c4ff;
     position: absolute;
     left:0;
     bottom: -6px;
