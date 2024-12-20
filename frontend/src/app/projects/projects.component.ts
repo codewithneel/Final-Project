@@ -19,6 +19,7 @@ export class ProjectsComponent implements OnInit {
   projects: Project[] = [];
   currentCompanyId: number | null = null;
   teamId: number | null = null;
+  teamName: string = ''; // Store the team name dynamically
   isAdmin: boolean = false;
 
   showCreateModal: boolean = false;
@@ -37,10 +38,8 @@ export class ProjectsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    if(this.currentUserService.getSharedloggedIN()==false)
-    {
-      this.router.navigate(['']); 
+    if (this.currentUserService.getSharedloggedIN() === false) {
+      this.router.navigate(['']);
     }
 
     this.currentCompanyId = +this.currentUserService.getCurrentCompany();
@@ -51,7 +50,7 @@ export class ProjectsComponent implements OnInit {
       this.isAdmin = userData.admin;
     }
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.teamId = +params['teamId']; // Convert to number
       console.log('Team ID from query:', this.teamId);
 
@@ -63,23 +62,30 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-
   fetchProjects(companyId: number, teamId: number): void {
     const url = `${this.baseUrl}/company/${companyId}/teams/${teamId}/projects`;
     this.http.get<any[]>(url).subscribe({
       next: (response) => {
         console.log('Fetched projects:', response);
 
-        this.projects = response.map(project => ({
+        this.projects = response.map((project) => ({
           id: project.id,
           name: project.name,
           description: project.description,
           isActive: project.active,
         }));
+
+        // Dynamically set the team name if available
+        if (response.length > 0 && response[0].team?.name) {
+          this.teamName = response[0].team.name;
+        } else {
+          this.teamName = `Team ${teamId}`; // Fallback to team ID
+        }
       },
       error: (error) => {
         console.error('Error fetching projects:', error);
-      }
+        this.teamName = `Team ${teamId}`; // Fallback if the request fails
+      },
     });
   }
 
@@ -110,7 +116,7 @@ export class ProjectsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error creating project:', error);
-      }
+      },
     });
   }
 
@@ -119,7 +125,6 @@ export class ProjectsComponent implements OnInit {
     this.currentProject = { ...project };
     this.showEditModal = true;
   }
-
 
   saveProject(): void {
     if (!this.currentCompanyId || !this.teamId) {
@@ -136,18 +141,18 @@ export class ProjectsComponent implements OnInit {
     };
 
     const url = `${this.baseUrl}/projects/${this.currentCompanyId}/${this.teamId}/updateProject`;
-    this.http.patch<Project>(url, payload).subscribe({
+    this.http.patch<any>(url, payload).subscribe({
       next: (response) => {
         console.log('Project updated:', response);
 
         // Update the project in the local array
-        const index = this.projects.findIndex(p => p.id === response.id);
+        const index = this.projects.findIndex((p) => p.id === response.id);
         if (index !== -1) {
           this.projects[index] = {
             id: response.id,
             name: response.name,
             description: response.description,
-            isActive: response.isActive,
+            isActive: response.active, // Correctly map active to isActive
           };
         }
 
@@ -155,7 +160,7 @@ export class ProjectsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error updating project:', error);
-      }
+      },
     });
   }
 

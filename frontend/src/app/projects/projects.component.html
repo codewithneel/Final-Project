@@ -2,7 +2,7 @@
 <div class="projects-page">
   <!-- Header -->
   <div class="header">
-    <h1>Projects for Team 1</h1>
+    <h1>Projects for {{ teamName }}</h1>
     <!-- Show "New" button only if the user is an admin -->
     <button *ngIf="isAdmin" class="new-btn" (click)="openCreateModal()">New</button>
   </div>
