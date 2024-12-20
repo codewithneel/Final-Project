@@ -1,5 +1,7 @@
-<label for="selectCompany">Select Company</label>
-<select id="selectCompany" [(ngModel)]="selectedCompany" (ngModelChange)="onCompanyChange()">
-    <option disabled selected>Pick an option</option>
-    <option *ngFor="let company of companies" [value]="company.id">{{company.name}}</option>
-</select>
+<div class="container">
+    <label class="title" for="selectCompany">Select Company</label>
+    <select id="selectCompany" [(ngModel)]="selectedCompany" (ngModelChange)="onCompanyChange()">
+        <option hidden>Pick an option</option>
+        <option *ngFor="let company of companies" [value]="company.id">{{company.name}}</option>
+    </select>
+</div>
