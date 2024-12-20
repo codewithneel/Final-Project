@@ -1,57 +1,92 @@
-
 <app-navbar></app-navbar>
-<div *ngIf="addTeamMember==false">
+<link href='https://fonts.googleapis.com/css?family=Mulish' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 
-    <h1>Teams</h1>
-    <div    *ngFor="let team of teams">
-        <p>{{team.name}}</p>
-        
-        
-        <div *ngIf="teamProjectLengthDict.hasOwnProperty(team.id)==false">
-            {{getNumOfProjects(team.id)}}
-            
-        </div>
-        <p># of Projects: {{ teamProjectLengthDict[team.id] }}</p>
-        <p>Teamates:</p>
-        <div *ngFor="let tm of team.teammates">
-            <p>{{tm.profile.firstName}} {{tm.profile.lastName[0]}}.</p>
-        </div>
-        <button (click)="editProjects(team.id)">Go To Projects</button>
-        <br>
+<div class="overAllBlock" *ngIf="addTeamMember==false">
+   
+    <h1 class="Title">Teams</h1>
+    <div class="MakeNewTeamButton">
+        <button (click)="addTeamMember=true" *ngIf="isAdmin">Add New Team</button>
     </div>
+    
+    <br>
+    <div class="allTeamBlocks">
+        <div   class="teamBlock" *ngFor="let team of teams">
+            <div  *ngIf="teamProjectLengthDict.hasOwnProperty(team.id)==false">
+                {{getNumOfProjects(team.id)}}
+            </div>
+    
+            <div class="teamHeader">
+                <p class="teamName">{{team.name}}</p>
+                
+                <p class="numOfProjects"># of Projects: {{ teamProjectLengthDict[team.id] }}</p>
+            </div>
+                
+            
+            <div class="teamHeader2">
+                <p>Teamates:</p>
+            </div>
+            
+            <div class="teamList" *ngFor="let tm of team.teammates">
+                <div>
+                    <p>{{tm.profile.firstName}} {{tm.profile.lastName[0]}}.</p>
+                </div>
+                
+            </div>
+            <button (click)="editProjects(team.id)" class="EditProjects">Go To Projects</button>
+        </div>
+    </div>
+    
     <br>
     
-    <button (click)="addTeamMember=true" *ngIf="isAdmin">New Team</button>
-    <br>
 </div>
 
-<div *ngIf="addTeamMember">
+<div class="overAllBlock" *ngIf="addTeamMember">
+    
+    <h1>Add Team</h1>
+    
 
     <div class="add-team-form">
-        <input
+        <div class="topInput">
+            <p>Team Name</p>
+            <input
             type="text" placeholder="Team Name"
             [(ngModel)]="teamName" 
             />
-        <input
+            <p>Description</p>
+            <input
             type="text" placeholder="Description"
             [(ngModel)]="description"
             />
-        <h1>Select Members</h1>
-        <select [(ngModel)]="selectedItem">
-            <option *ngFor="let member of teamMembers" [ngValue]="member">{{ member.profile.firstName }} {{ member.profile.lastName[0] }}.</option>
-        </select>
-        <button (click)="addToSelectedMembers()">Add Member</button>
+
+        </div>
+
+        <h2>Select Members</h2>
+        <div class="selectMembers">
+            <select [(ngModel)]="selectedItem">
+                <option *ngFor="let member of teamMembers" [ngValue]="member">{{ member.profile.firstName }} {{ member.profile.lastName[0] }}.</option>
+            </select>
+            <button (click)="addToSelectedMembers()">Add Member</button>
+
+        </div>
+
         <br>
-        <h1 *ngIf="selectedMembers.length > 0">Selected Members</h1>
-        <div *ngFor="let member of selectedMembers">
+        <h2 *ngIf="selectedMembers.length > 0">Selected Members</h2>
+        <div *ngFor="let member of selectedMembers" class="selectedMembersBox">
             <div class="potentialTeamMember">
                 <p>{{ member.profile.firstName }} {{ member.profile.lastName }}</p> 
-                <button (click)="removeMember(member.id)">Remove person</button>
+                <!--  <button (click)="removeMember(member.id)">Remove person</button> -->
+                <input type="image" name="Name of image button" (click)="removeMember(member.id)" src="assets\images\Cross_red_circle.png" alt="text">  
+
             </div>
             
             
         </div>  
-        <button (click)="postTeam()">Submit</button>
+
+        <div class="postTeamButton">
+            <button (click)="postTeam()">Submit</button>
+        </div>
+        
         
             
     </div>
