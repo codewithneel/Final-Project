@@ -63,10 +63,9 @@
 
         <h2>Select Members</h2>
         <div class="selectMembers">
-            <select [(ngModel)]="selectedItem">
+            <select [(ngModel)]="selectedItem" (ngModelChange)="onMemberChange()">
                 <option *ngFor="let member of teamMembers" [ngValue]="member">{{ member.profile.firstName }} {{ member.profile.lastName[0] }}.</option>
             </select>
-            <button (click)="addToSelectedMembers()">Add Member</button>
 
         </div>
 

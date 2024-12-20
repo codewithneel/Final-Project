@@ -3,6 +3,12 @@
     color:#1BA098;
     display: grid;
     place-items: center;
+    margin-bottom: 50px;
+}
+
+.title h1
+{
+    margin-bottom: 80px;
 }
 
 .login-card, .selectCompany
@@ -12,10 +18,46 @@
     place-items: center;
 }
 
+.login-form input
+{
+    width: 400px;
+}
+
 .login-form
 {
     display:flex;
     flex-direction: column;
     gap: 25px;
     margin-bottom: 25px;
+}
+
+.logo
+{
+    width:250px; 
+    height: 250px;
+    align-items: center;
+    border-radius: 50%;
+    border: 10px solid #0D3A59;
+    background-color: #0D3A59;
+}
+button 
+ {
+    background-color: #1BA098; 
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover
+{
+    background-color: #1a97d4;
+}
+
+p
+{
+    color:#F24E1E;
 }

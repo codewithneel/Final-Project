@@ -80,6 +80,12 @@ export class TeamsComponent implements OnInit {
   
   }
 
+  onMemberChange(): void
+  {
+    this.addToSelectedMembers();
+    
+  }
+
   getTeamMates()
   { 
     fetch(`http://localhost:8080/team/${this.currentCompany}/teammates`, {

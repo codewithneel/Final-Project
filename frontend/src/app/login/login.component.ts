@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loggedIN:boolean=false;
+  failedLogIn:boolean=false;
 
   username: string='';
   password: string='';
@@ -37,9 +38,11 @@ export class LoginComponent implements OnInit {
       if(data.message=="The username provided does not belong to an active user.")
       {
         this._currentUserService.setSharedVariableloggedIN(false);
+        this.failedLogIn=true;
       }
       else
       {
+        this.failedLogIn=false;
         this._currentUserService.setSharedVariableloggedIN(true);
         this.loggedIN = true; 
         this.router.navigate(['/company']); 
