@@ -25,6 +25,7 @@ h1
 {
     width: 250px;
     height:25px;
+    background-color: #1BA098;
 }
 
 .teamBlock {
@@ -32,9 +33,9 @@ h1
     display: flex;
     flex-direction: column;
     gap: 15px;
-    width: 100%; /* Use full width of the parent */
-    max-width: 500px; /* Set a reasonable max width */
-    margin: 0 auto; /* Centers the block */
+    width: 100%; 
+    max-width: 500px; 
+    margin: 0 auto; 
     padding: 15px;
     box-sizing: border-box;
     border-radius: 10px; 
@@ -96,13 +97,13 @@ h1
 
 .teamList {
     display: grid;
-    grid-template-columns:  300px ; /* Two columns, each taking equal width */
-    gap: 15px; /* Spacing between rows and columns */
-    justify-content: center; /* Centers the grid inside the parent */
-    align-items: center; /* Aligns items vertically in each cell */
-    margin: 10px auto; /* Centers the grid block */
-    width: 100%; /* Ensures grid uses full width of its parent */
-    max-width: 400px; /* Prevents it from exceeding the parent width */
+    grid-template-columns:  300px ; 
+    gap: 15px;
+    justify-content: center; 
+    align-items: center; 
+    margin: 10px auto; 
+    width: 100%; 
+    max-width: 400px; 
 }
 
 .teamList p, .selectedMembersBox p
@@ -137,7 +138,7 @@ h1
     transition: all 0.3s ease;
 }
 
-button:hover
+button:hover, .postTeamButton button:hover, .MakeNewTeamButton button:hover
 {
     background-color: #1a97d4;
 }
@@ -162,6 +163,7 @@ button:hover
 {
     background-color: #051622;
     color:#DEB992;
+    margin-bottom: 20px;
 }
 
 .add-team-form h2
@@ -169,6 +171,7 @@ button:hover
     color:#DEB992;
     font-size: 27px;
     font-family: 'Inter';
+    margin-bottom: 20px;
 }
 
 .selectMembers
@@ -178,7 +181,14 @@ button:hover
     justify-content: center; 
     align-items: center;
     gap: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+}
+
+.selectMembers select
+{
+    width: 200px;
+    height: 35px;
+    border-radius: 10px;
 }
 
 .selectedMembersBox
@@ -196,7 +206,6 @@ button:hover
 
 .potentialTeamMember input
 {
-    margin-top: 10px;
     height: 50px;
     width: 50px;
 }
